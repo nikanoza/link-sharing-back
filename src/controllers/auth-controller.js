@@ -40,3 +40,27 @@ export const createUser = async (req, res) => {
     return res.status(401).json(error);
   }
 };
+
+export const verifyUser = async (req, res) => {
+  const { hash } = req.body;
+
+  try {
+    const emailVerify = await pool.query(
+      "SELECT * FROM emailvalidation WHERE hash = $1",
+      [hash]
+    );
+
+    if (emailVerify.rows.length === 0) {
+      return res.status(402).json({ error: "Hash not found" });
+    }
+
+    await pool.query("UPDATE users SET verify = true WHERE email = $1", [
+      emailVerify.rows[0].email,
+    ]);
+
+    await pool.query("DELETE FROM emailvalidation WHERE hash = $1", [hash]);
+    return res.status(200).json({ message: "User verified successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
