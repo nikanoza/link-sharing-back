@@ -63,6 +63,7 @@ export const login = async (req, res) => {
     const compare = await bcrypt.compare(password, user.password);
 
     if (compare) {
+      delete user.password;
       return res.status(200).json(user);
     }
 
