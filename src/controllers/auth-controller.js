@@ -4,6 +4,7 @@ import crypto from "crypto";
 import pool from "../config/sql.js";
 import { sendEmailConfirmation } from "../mail/edge.js";
 import addUserSchema from "../schemas/add-user-schema.js";
+import loginSchema from "../schemas/login-schema.js";
 
 export const createUser = async (req, res) => {
   const { body } = req;
@@ -13,7 +14,7 @@ export const createUser = async (req, res) => {
     const { value, error } = validator.validate(body);
 
     if (error) {
-      return res.status(401).json(error);
+      return res.status(401).json(error.details);
     }
 
     const { email, password, backLink } = value;
@@ -37,7 +38,37 @@ export const createUser = async (req, res) => {
 
     return res.status(201).json(result.rows[0]);
   } catch (error) {
-    return res.status(401).json(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const login = async (req, res) => {
+  const { body } = req;
+
+  try {
+    const validator = await loginSchema(body);
+    const { value, error } = validator.validate(body);
+
+    if (error) {
+      return res.status(401).json(error.details);
+    }
+
+    const { email, password } = value;
+
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    const user = result.rows[0];
+    const compare = await bcrypt.compare(password, user.password);
+
+    if (compare) {
+      return res.status(200).json(user);
+    }
+
+    return res.status(402).json({ error: "invalid credentials" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 };
 
