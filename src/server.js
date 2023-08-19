@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
-import swaggerMiddleware from "./middlewares/swagger-middleware";
+import cors from "cors";
+import swaggerMiddleware from "./middlewares/swagger-middleware.js";
 
 const app = express();
 
