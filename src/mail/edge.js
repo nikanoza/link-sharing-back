@@ -17,10 +17,9 @@ const send = (to, subject, html) => {
   return gmailTransport.sendMail(options);
 };
 
-export const sendEmailConfirmation = async (to, hash, name, backLink) => {
+export const sendEmailConfirmation = async (to, hash, backLink) => {
   const html = edge.renderSync("confirm-email", {
     link: `${backLink}?hash=${hash}`,
-    name,
   });
   return send(to, "Email Confirmation", html);
 };
