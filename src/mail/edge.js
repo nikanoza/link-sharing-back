@@ -1,6 +1,6 @@
 import { Edge } from "edge.js";
 import path, { join } from "path";
-import gmailTransport from "./gmail";
+import gmailTransport from "./index.js";
 
 const edge = new Edge({ cache: false });
 const templatesPath = join(path.resolve(), "src/mail/templates");
@@ -21,5 +21,6 @@ export const sendEmailConfirmation = async (to, hash, backLink) => {
   const html = edge.renderSync("confirm-email", {
     link: `${backLink}?hash=${hash}`,
   });
+
   return send(to, "Email Confirmation", html);
 };

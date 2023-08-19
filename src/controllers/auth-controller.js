@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import { addUserSchema } from "../schemas";
+
 import pool from "../config/sql.js";
 import { sendEmailConfirmation } from "../mail/edge.js";
+import addUserSchema from "../schemas/add-user-schema.js";
 
 export const createUser = async (req, res) => {
   const { body } = req;
@@ -33,6 +34,7 @@ export const createUser = async (req, res) => {
     );
 
     await sendEmailConfirmation(email, hash, backLink);
+
     return res.status(201).json(result.rows[0]);
   } catch (error) {
     return res.status(401).json(error);

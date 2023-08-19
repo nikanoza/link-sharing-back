@@ -15,7 +15,11 @@ export const addUserSchema = async (data) => {
   ]);
 
   return Joi.object({
-    email: Joi.string().email().custom(ifUserExist(user)).required().trim(),
+    email: Joi.string()
+      .email()
+      .custom(ifUserExist(user.rows[0]))
+      .required()
+      .trim(),
     password: Joi.string().trim().min(5).max(10).required(),
     backLink: Joi.string().uri().trim().required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
