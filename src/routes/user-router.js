@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import { updateUserWithAvatar } from "../controllers/user-controller.js";
 
 const userRouter = express.Router();

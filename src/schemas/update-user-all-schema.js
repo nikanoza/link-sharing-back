@@ -2,8 +2,8 @@ import Joi from "joi";
 import pool from "../config/sql.js";
 
 const ifUserExist = (user) => (value, helpers) => {
-  if (user) {
-    return helpers.message("user with this email already exist");
+  if (!user) {
+    return helpers.message("user with this email not exist");
   }
 
   return value;
