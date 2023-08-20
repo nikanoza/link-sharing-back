@@ -1,6 +1,9 @@
 import express from "express";
 import multer from "multer";
-import { updateUserWithAvatar } from "../controllers/user-controller.js";
+import {
+  updateUser,
+  updateUserWithAvatar,
+} from "../controllers/user-controller.js";
 
 const userRouter = express.Router();
 
@@ -32,5 +35,6 @@ userRouter.put(
   multer({ storage: fileStorage, fileFilter }).single("avatar"),
   updateUserWithAvatar
 );
+userRouter.put("/users/:id", updateUser);
 
 export default userRouter;
