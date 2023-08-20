@@ -27,7 +27,7 @@ export const fileFilter = (__, file, callback) => {
 };
 
 userRouter.put(
-  "/users/all",
+  "/users/all/:id",
   multer({ storage: fileStorage, fileFilter }).single("avatar"),
   updateUserWithAvatar
 );
