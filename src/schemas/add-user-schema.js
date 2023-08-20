@@ -20,7 +20,7 @@ export const addUserSchema = async (data) => {
       .custom(ifUserExist(user.rows[0]))
       .required()
       .trim(),
-    password: Joi.string().trim().min(5).max(10).required(),
+    password: Joi.string().trim().min(8).max(15).required(),
     backLink: Joi.string().uri().trim().required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
   });
