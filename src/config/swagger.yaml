@@ -69,3 +69,60 @@ paths:
       responses:
         "200":
           description: user login successfully
+  /users/all/{id}:
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      tags:
+        - User
+      requestBody:
+        description: update avatar
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+      responses:
+        "204":
+          description: user updated
+  /users/{id}:
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      tags:
+        - User
+      requestBody:
+        description: user update request
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+      responses:
+        "204":
+          description: user updated
